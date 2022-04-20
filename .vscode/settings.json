@@ -1,0 +1,5 @@
+{
+    "shellcheck.enable": true,
+    "C_Cpp.errorSquiggles": "Disabled",
+    "workbench.colorTheme": "Solarized Light"
+}

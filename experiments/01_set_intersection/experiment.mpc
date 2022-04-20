@@ -1,5 +1,6 @@
 """
 Set intersect , Keller(Example programs used in the SPDZ tutorial at the TPMPC 2017 workshop in Bristol.)
+Adapted by Jacob Obrman
 """
 
 from util import if_else
@@ -26,7 +27,7 @@ def compute_intersection(a, b):
 			intersection[i] = if_else(match, a[i], intersection[i]) # match * a[i] + (1 - match) * intersection[i]
 	return intersection, is_match_at
 	
-def set_intersection_example(n):
+def set_intersection(n):
 	"""Naive private set intersection on two Arrays, followed by computing the size and average of the intersection"""
 	a = Array(n, sint)
 	b = Array(n, sint)
@@ -52,5 +53,22 @@ def set_intersection_example(n):
 	print_ln('Average in intersection: %s', (total_fixed / size.read()).reveal())
 
 
-set_intersection_example(10)
 
+
+try:
+	set_intersection(program.args[1])
+except:
+	print_ln('Please provide the size of the set with')
+	print_ln('./compile.py experiment setsize\n')
+
+
+print_ln('testing random num gen\n')
+n = 2
+try:
+        n = int(program.args[1])
+except:
+        print_ln('Please provide the size of the set with')
+        print_ln('./compile.py experiment setsize\n')
+@for_range(n)
+def _(i):
+        print_ln('rand num %s: %s', i, regint.get_random(4))
