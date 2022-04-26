@@ -46,14 +46,16 @@ def set_intersection(a, b):
 	total_fixed.load_int(total.read())
 	print_ln('Average in intersection: %s', (total_fixed / size.read()).reveal())
 
-def contains(array, e):
-	n = len(array)
-	@for_range(n)
-	def _(i):
-		if array[i] == e:
-			return True
-	return False
 
+def contains(array, e):
+    n = len(array)
+    contains =  Array(1, cint)
+    @for_range(n)
+    def _(i):
+        if array[i].reveal() == e:
+            contains[0] = 1
+            break_loop()
+    return contains[0]
 
 def get_random_set(n):
 	a = Array(n, sint)
@@ -62,7 +64,7 @@ def get_random_set(n):
 		x = regint.get_random(4)
 		if contains(a, x):
 			i -= 1
-		elif
+		else:
 			a[i] = x
 		
 
@@ -71,12 +73,12 @@ def print_array(a):
 	print_str('[ ')
 	@for_range(n)
 	def _(i):
-		print_str('%s ', intersection[i].reveal())
+		print_str('%s ', a[i].reveal())
 	print_str(']\n')
 
 
 try:
-     n = int(program.args[1])
+    n = int(program.args[1])
 except:
     print_ln('Please provide the size of the set with:')
     print_ln('  ./compile.py experiment setsize\n')
