@@ -2,10 +2,54 @@
 Set intersect , Keller(Example programs used in the SPDZ tutorial at the TPMPC 2017 workshop in Bristol.)
 Adapted by Jacob Obrman
 """
+Example programs used in the SPDZ tutorial at the TPMPC 2017 workshop in Bristol.
+"""
 
 from util import if_else
 
 program.bit_length = 32
+
+def millionnaires():
+	""" Secure comparison, receiving input from each party via stdin """
+	print_ln("Waiting for Alice's input")
+	alice = sint.get_input_from(0)
+	print_ln("Waiting for Bob's input")
+	bob = sint.get_input_from(1)
+
+	b = alice < bob
+	print_ln('The richest is: %s', b.reveal())
+
+def naive_search(n):
+	""" Search secret list for private input from Bob """
+	# hardcoded "secret" list from Alice - in a real application this should be a private input
+	a = [sint(i) for i in range(n)] 
+	print_ln("Waiting for search input from Bob")
+	b = sint.get_input_from(1)
+
+	eq_bits = [x == b for x in a]
+	b_in_a = sum(eq_bits)
+	print_ln("Is b in Alice's list? %s", b_in_a.reveal())
+
+def scalable_search(n):
+	""" Search using SPDZ loop to avoid loop unrolling """
+	array = Array(n, sint)
+
+	@for_range(n)
+	def _(i):
+		array[i] = sint(i)
+
+	print_ln("Waiting for search input from Bob")
+	b = sint.get_input_from(1)
+
+	# need to use MemValue and Array inside @for_range loops,
+	# instead of basic sint/cint registers
+	result = MemValue(sint(0))
+
+	@for_range(100, n)
+	def _(i):
+		result.write(result + (array[i] == b))
+
+	print_ln("Is b in Alice's list? %s", result.reveal())
 
 def compute_intersection(a, b):
 	""" Naive quadratic private set intersection.
@@ -27,9 +71,15 @@ def compute_intersection(a, b):
 			intersection[i] = if_else(match, a[i], intersection[i]) # match * a[i] + (1 - match) * intersection[i]
 	return intersection, is_match_at
 	
-def set_intersection(a, b):
+def set_intersection_example(n):
 	"""Naive private set intersection on two Arrays, followed by computing the size and average of the intersection"""
-	
+	a = Array(n, sint)
+	b = Array(n, sint)
+	print_ln('Running PSI example')
+	@for_range(n)
+	def _(i):
+		a[i] = i
+		b[i] = i + 60
 	intersection, is_match_at = compute_intersection(a,b)
 
 	print_ln('Printing set intersection (0: not in intersection)')
@@ -47,50 +97,9 @@ def set_intersection(a, b):
 	print_ln('Average in intersection: %s', (total_fixed / size.read()).reveal())
 
 
-def contains(array, e):
-    n = len(array)
-    contains =  Array(1, cint)
-    @for_range(n)
-    def _(i):
-        if array[i].reveal() == e:
-            contains[0] = 1
-            break_loop()
-    return contains[0]
 
-def get_random_set(n):
-	a = Array(n, sint)
-	@for_range(n)
-	def _(i):
-		x = regint.get_random(4)
-		if contains(a, x):
-			i -= 1
-		else:
-			a[i] = x
-		
-
-def print_array(a):
-	n = len(a)
-	print_str('[ ')
-	@for_range(n)
-	def _(i):
-		print_str('%s ', a[i].reveal())
-	print_str(']\n')
-
-
-try:
-    n = int(program.args[1])
-except:
-    print_ln('Please provide the size of the set with:')
-    print_ln('  ./compile.py experiment setsize\n')
-	return
-
-a = get_random_set(n)
-b = get_random_set(n)
-
-print_ln('Verify arrays')
-print_array(a)
-print_array(b)
-print_ln('')
-
-set_intersection(a, b)
+#millionnaires()
+#naive_search(100)
+#scalable_search(10000)
+set_intersection_example(40)
 
