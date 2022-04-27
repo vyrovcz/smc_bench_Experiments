@@ -104,7 +104,7 @@ def print_array(a):
 		print_str('%s ', a[i].reveal())
 	print_str(']\n')
 
-def read_sintArray(player, n):
+def read_sintArray(n, player):
 	a = Array(n, sint)
 	@for_range(n)
 	def _(i):
@@ -112,8 +112,11 @@ def read_sintArray(player, n):
 	return a
 
 n = program.args[1]
-a = read_sintArray(1, n)
-b = read_sintArray(2, n)
+#a = read_sintArray(n, 1)
+#b = read_sintArray(n, 2)
+
+print_str('%s ', n)
+print_str('%s ', sint.get_input_from(0).reveal())
 
 print_array(a)
 print_array(b)
