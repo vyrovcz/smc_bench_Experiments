@@ -71,16 +71,19 @@ def read_sintArray(n, player):
 
 n = int(program.args[1])
 
-print_str('%s ', n)
-#print_str('%s ', sint.get_input_from(0).reveal())
-
 a = sint.Array(n)
 a.input_from(0)
 b = sint.Array(n)
 b.input_from(1)
 
-#print_array(a)
-#print_array(b)
+print_ln('Player 1 number set')
+print_array(a)
+print_ln('Player 2 number set')
+print_array(b)
+
+print_ln('Intersection')
+intersection, is_match_at = compute_intersection(a,b)
+print_array(intersection)
 
 #set_intersection_example(40)
 
