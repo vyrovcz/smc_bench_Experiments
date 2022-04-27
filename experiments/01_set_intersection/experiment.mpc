@@ -9,48 +9,6 @@ from util import if_else
 
 program.bit_length = 32
 
-def millionnaires():
-	""" Secure comparison, receiving input from each party via stdin """
-	print_ln("Waiting for Alice's input")
-	alice = sint.get_input_from(0)
-	print_ln("Waiting for Bob's input")
-	bob = sint.get_input_from(1)
-
-	b = alice < bob
-	print_ln('The richest is: %s', b.reveal())
-
-def naive_search(n):
-	""" Search secret list for private input from Bob """
-	# hardcoded "secret" list from Alice - in a real application this should be a private input
-	a = [sint(i) for i in range(n)] 
-	print_ln("Waiting for search input from Bob")
-	b = sint.get_input_from(1)
-
-	eq_bits = [x == b for x in a]
-	b_in_a = sum(eq_bits)
-	print_ln("Is b in Alice's list? %s", b_in_a.reveal())
-
-def scalable_search(n):
-	""" Search using SPDZ loop to avoid loop unrolling """
-	array = Array(n, sint)
-
-	@for_range(n)
-	def _(i):
-		array[i] = sint(i)
-
-	print_ln("Waiting for search input from Bob")
-	b = sint.get_input_from(1)
-
-	# need to use MemValue and Array inside @for_range loops,
-	# instead of basic sint/cint registers
-	result = MemValue(sint(0))
-
-	@for_range(100, n)
-	def _(i):
-		result.write(result + (array[i] == b))
-
-	print_ln("Is b in Alice's list? %s", result.reveal())
-
 def compute_intersection(a, b):
 	""" Naive quadratic private set intersection.
 
@@ -111,18 +69,18 @@ def read_sintArray(n, player):
 		a[i] = sint.get_input_from(player)
 	return a
 
-n = program.args[1]
-#a = read_sintArray(n, 1)
-#b = read_sintArray(n, 2)
+n = int(program.args[1])
 
 print_str('%s ', n)
-print_str('%s ', sint.get_input_from(0).reveal())
+#print_str('%s ', sint.get_input_from(0).reveal())
 
-print_array(a)
-print_array(b)
+a = sint.Array(n)
+a.input_from(0)
+b = sint.Array(n)
+b.input_from(1)
 
-#millionnaires()
-#naive_search(100)
-#scalable_search(10000)
+#print_array(a)
+#print_array(b)
+
 #set_intersection_example(40)
 
