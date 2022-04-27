@@ -1,7 +1,7 @@
 """
 Set intersect , Keller(Example programs used in the SPDZ tutorial at the TPMPC 2017 workshop in Bristol.)
 Adapted by Jacob Obrman
-"""
+
 Example programs used in the SPDZ tutorial at the TPMPC 2017 workshop in Bristol.
 """
 
@@ -96,10 +96,30 @@ def set_intersection_example(n):
 	total_fixed.load_int(total.read())
 	print_ln('Average in intersection: %s', (total_fixed / size.read()).reveal())
 
+def print_array(a):
+	n = len(a)
+	print_str('[ ')
+	@for_range(n)
+	def _(i):
+		print_str('%s ', a[i].reveal())
+	print_str(']\n')
 
+def read_sintArray(player, n):
+	a = Array(n, sint)
+	@for_range(n)
+	def _(i):
+		a[i] = sint.get_input_from(player)
+	return a
+
+n = program.args[1]
+a = read_sintArray(1, n)
+b = read_sintArray(2, n)
+
+print_array(a)
+print_array(b)
 
 #millionnaires()
 #naive_search(100)
 #scalable_search(10000)
-set_intersection_example(40)
+#set_intersection_example(40)
 
