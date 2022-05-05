@@ -7,7 +7,7 @@ Example programs used in the SPDZ tutorial at the TPMPC 2017 workshop in Bristol
 
 from util import if_else
 
-program.bit_length = 32
+program.bit_length = 64
 
 def compute_intersection(a, b):
 	""" Naive quadratic private set intersection.
@@ -17,42 +17,15 @@ def compute_intersection(a, b):
 	n = len(a)
 	if n != len(b):
 		raise CompilerError('Inconsistent lengths to compute_intersection')
-	intersection = Array(n, sint)
-	is_match_at = Array(n, sint)
+	intersection = sint.Array(n)
 
 	@for_range(n)
 	def _(i):
 		@for_range(n)
 		def _(j):
 			match = a[i] == b[j]
-			is_match_at[i] += match
 			intersection[i] = if_else(match, a[i], intersection[i]) # match * a[i] + (1 - match) * intersection[i]
-	return intersection, is_match_at
-	
-def set_intersection_example(n):
-	"""Naive private set intersection on two Arrays, followed by computing the size and average of the intersection"""
-	a = Array(n, sint)
-	b = Array(n, sint)
-	print_ln('Running PSI example')
-	@for_range(n)
-	def _(i):
-		a[i] = i
-		b[i] = i + 60
-	intersection, is_match_at = compute_intersection(a,b)
-
-	print_ln('Printing set intersection (0: not in intersection)')
-	size = MemValue(sint(0))
-	total = MemValue(sint(0))
-	@for_range(n)
-	def _(i):
-		size.write(size + is_match_at[i])
-		total.write(total + intersection[i])
-		print_str('%s ', intersection[i].reveal())
-	print_ln('\nIntersection size: %s', size.reveal())
-
-	total_fixed = sfix()
-	total_fixed.load_int(total.read())
-	print_ln('Average in intersection: %s', (total_fixed / size.read()).reveal())
+	return intersection
 
 def print_array(a):
 	n = len(a)
@@ -61,13 +34,6 @@ def print_array(a):
 	def _(i):
 		print_str('%s ', a[i].reveal())
 	print_str(']\n')
-
-def read_sintArray(n, player):
-	a = Array(n, sint)
-	@for_range(n)
-	def _(i):
-		a[i] = sint.get_input_from(player)
-	return a
 
 n = int(program.args[1])
 
@@ -82,8 +48,7 @@ print_ln('Player 2 number set')
 print_array(b)
 
 print_ln('Intersection')
-intersection, is_match_at = compute_intersection(a,b)
+intersection = compute_intersection(a,b)
 print_array(intersection)
 
-#set_intersection_example(40)
 
