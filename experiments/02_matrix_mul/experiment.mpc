@@ -3,44 +3,23 @@ Matrix Multiplication, inspired by Keller
 Adapted by Jacob Obrman
 """
 
-from util import if_else
-
 program.bit_length = 64
 
-def compute_matrix_mul(a, b):
-	return a * b
+n = int(program.args[1])
 
-def print_array(a):
-	n = len(a)
-	print_str('[ ')
-	@for_range(n)
-	def _(i):
-		print_str('%s ', a[i].reveal())
-	print_str(']\n')
+a = Matrix(n, n+1, sint)
+a.input_from(0)
 
-#def read_matrix(n, m, p):
+b = Matrix(n+1, n+2, sint)
+b.input_from(1)
 
-M = Matrix(2, 2, sint)
-M[0][0] = 1
-M[1][0] = 2
-M[0][1] = 4
-M[1][1] = 8
+M = a * b
 
-print_ln('Matrix: %s', M)
-print_ln('Matrix: %s', M.reveal_list())
-
-#n = int(program.args[1])
-#
-#a = Matrix(n, n+1, sint)
-#a.input_from(0)
-#b = Matrix(n+1, n+2, sint)
-#b.input_from(1)
-#
-#print_ln('Player 1 number set')
-#print_array(a)
-#print_ln('Player 2 number set')
-#print_array(b)
-#
-#print_ln('Intersection')
-#intersection = compute_intersection(a,b)
-#print_array(intersection)
+print_ln()
+print_ln('Matrix Player 0',)
+a.print_reveal_nested()
+print_ln('Matrix Player 1',)
+b.print_reveal_nested()
+print_ln('Mat P0 * Mat P1:',)
+M.print_reveal_nested()
+print_ln()
