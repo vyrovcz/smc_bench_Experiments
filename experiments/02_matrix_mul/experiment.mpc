@@ -1,0 +1,46 @@
+"""
+Matrix Multiplication, inspired by Keller
+Adapted by Jacob Obrman
+"""
+
+from util import if_else
+
+program.bit_length = 64
+
+def compute_matrix_mul(a, b):
+	return a * b
+
+def print_array(a):
+	n = len(a)
+	print_str('[ ')
+	@for_range(n)
+	def _(i):
+		print_str('%s ', a[i].reveal())
+	print_str(']\n')
+
+#def read_matrix(n, m, p):
+
+M = Matrix(2, 2, sint)
+M[0][0] = 1
+M[1][0] = 2
+M[0][1] = 4
+M[1][1] = 8
+
+print_ln('Matrix: %s', M)
+print_ln('Matrix: %s', M.reveal_list())
+
+#n = int(program.args[1])
+#
+#a = Matrix(n, n+1, sint)
+#a.input_from(0)
+#b = Matrix(n+1, n+2, sint)
+#b.input_from(1)
+#
+#print_ln('Player 1 number set')
+#print_array(a)
+#print_ln('Player 2 number set')
+#print_array(b)
+#
+#print_ln('Intersection')
+#intersection = compute_intersection(a,b)
+#print_array(intersection)
