@@ -23,8 +23,9 @@ def compute_intersection(a, b):
 	def _(i):
 		@for_range(n)
 		def _(j):
-			match = a[i] == b[j]
-			intersection[i] = if_else(match, a[i], intersection[i]) # match * a[i] + (1 - match) * intersection[i]
+			#this is inefficient, loop has to break after match is found
+			#use of Compiler.library.break_loop can improve runtime
+			intersection[i] = if_else(a[i] == b[j], a[i], sint(0)) # match * a[i] + (1 - match) * intersection[i]
 	return intersection
 
 def print_array(a):
@@ -50,5 +51,3 @@ print_array(b)
 print_ln('Intersection')
 intersection = compute_intersection(a,b)
 print_array(intersection)
-
-
