@@ -1,0 +1,34 @@
+"""
+Inspired by Keller
+Adapted by Jacob Obrman
+"""
+
+program.bit_length = 64
+
+def scalable_search(array, x):
+    """ Search using SPDZ loop to avoid loop unrolling """
+
+	print_ln("Waiting for search input from Bob")
+	b = sint.get_input_from(1)
+
+	# need to use MemValue and Array inside @for_range loops,
+	# instead of basic sint/cint registers
+	result = MemValue(sint(0))
+
+	@for_range(100, n)
+	def _(i):
+		result.write(result + (array[i] == b))
+
+	print_ln("Is b in Alice's list? %s", result.reveal())
+
+
+n = int(program.args[1])
+
+haystack = sint.Array(n)
+haystack.input_from(0)
+needle = sint.input_from(1)
+
+if scalable_search(haystack, needle):
+    print_ln("haystack contains needle")
+else:
+    print_ln("no needle in haystack")
