@@ -3,17 +3,21 @@
 from random import randint, seed, random
 import sys
 
-rand_range = 3
+rrange = 1
 float_precision = 5
 
 def get_random_set(n: int):
+        if rrange < n:
+                print("range >= amount must be true for unique sets")
+                print("(range)", rrange,"<", n,"(amount), please change to reasonable constellation")
+                exit(1)
         rand_set = set()
         while len(rand_set) < n:
-                rand_set.add(randint(1, rand_range*n))
+                rand_set.add(randint(1, rrange))
         return rand_set
 
 def get_random_tupel(n: int):
-        return [randint(1, n) for i in range(n)]
+        return [randint(1, rrange) for i in range(n)]
 
 def get_random_matrix(n: int):
         return [get_random_tupel(n) for i in range(n)]
@@ -30,15 +34,16 @@ def matrix_to_string(m):
 try:
         option = sys.argv[1][-1]
         n = int(sys.argv[2])
-        seed(int(sys.argv[3]))
+        rrange = int(sys.argv[3])
+        seed(int(sys.argv[4]))
 
 except:
-        print("Usage: ./inputgen.py <option> <amount> <seed>")
+        print("Usage: ./inputgen.py <option> <amount> <range> <seed>")
         print("Options:")
-        print("  -s: set,   Print <amount> many unique random numbers in range [1:3*<amount>]")
-        print("  -t: tupel, Print <amount> many random numbers in range [1:<amount>]")
-        print("  -f: float, Print <amount> many random numbers in range [1:<amount>]")
-        print("  -m: matrix, Print <amount>^2 many random numbers in range [1:<amount>]")
+        print("  -s: set,   Print <amount> many unique random numbers in range [1:<range>]")
+        print("  -t: tupel, Print <amount> many random numbers in range [1:<range>]")
+        print("  -f: float, Print <amount> many random numbers in range [1:<range>]")
+        print("  -m: matrix, Print <amount>^2 many random numbers in range [1:<range>]")
         exit()
 
 # python3.9 and lower support
