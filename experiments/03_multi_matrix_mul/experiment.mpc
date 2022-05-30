@@ -13,17 +13,16 @@ inputs = sint.Tensor([playercount, matsize, matsize])
 for i in range(playercount):
     inputs[i].input_from(i)
 
-print_ln()
-for i in range(playercount):
-    print_ln('Matrix Player %s', i)
-    inputs[i].print_reveal_nested()
-
 for i in range(playercount-1):
     result = inputs[i] * inputs[i+1]
     inputs[i+1] = result
 
-print_ln()
+#print_ln()
+#for i in range(playercount):
+#    print_ln('Matrix Player %s', i)
+#    inputs[i].print_reveal_nested()
 
+print_ln()
 print_ln('Mat P0 * Mat P1 * ... * Mat Pn:',)
 inputs[playercount-1].print_reveal_nested()
 print_ln()

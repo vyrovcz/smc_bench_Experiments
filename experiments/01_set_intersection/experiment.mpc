@@ -23,27 +23,8 @@ def compute_intersection(a, b):
 	def _(i):
 		@for_range(n)
 		def _(j):
-			"""
-			this is inefficient, loop has to break after match is found
-			use of Compiler.library.break_loop can improve runtime
-			or use a construct like:
-			@if_e(<cond>)
-			def _():
-				print_ln('%s', result.reveal())
-			@else_
-			def _():
-				print_ln('your inputs made no sense')
-			"""
 			intersection[i] = if_else(a[i] == b[j], a[i], sint(0)) # match * a[i] + (1 - match) * intersection[i]
 	return intersection
-
-def print_array(a):
-	n = len(a)
-	print_str('[ ')
-	@for_range(n)
-	def _(i):
-		print_str('%s ', a[i].reveal())
-	print_str(']\n')
 
 n = int(program.args[1])
 
@@ -52,11 +33,7 @@ a.input_from(0)
 b = sint.Array(n)
 b.input_from(1)
 
-print_ln('Player 1 number set')
-print_array(a)
-print_ln('Player 2 number set')
-print_array(b)
-
 print_ln('Intersection')
 intersection = compute_intersection(a,b)
-print_array(intersection)
+
+intersection.print_reveal_nested()
